@@ -142,7 +142,7 @@ class DRE:
                 # get all values from this section of the config file
                 # append them altogether with either ; or : in between, 
                 # depending on OS
-                elems = os.pathsep.join([i[1] for i in cp.items(sec)])
+                elems = os.pathsep.join([i[1] for i in cp.items(sec) if i[0] != 'dre_top'])
 
                 # if this env variable already exists, prepend to it:
                 v = self.env.get(env_var)
