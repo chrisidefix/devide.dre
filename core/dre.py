@@ -118,7 +118,8 @@ class DRE:
             self.python_bin = sys.executable 
 
         # read the DRE configuration file
-        cp = ConfigParser.ConfigParser({'dre_top' : self.dre_top})
+        cp_defaults = {'dre_top' : self.dre_top}
+        cp = ConfigParser.ConfigParser(cp_defaults)
         cf = open(os.path.join(self.dre_top, 'dre.cfg'),'r')
         cp.readfp(cf)
         
@@ -142,7 +143,8 @@ class DRE:
                 # get all values from this section of the config file
                 # append them altogether with either ; or : in between, 
                 # depending on OS
-                elems = os.pathsep.join([i[1] for i in cp.items(sec) if i[0] != 'dre_top'])
+                # NB: cp.items() also returns defaults, which include dre_top!
+                elems = os.pathsep.join([i[1] for i in cp.items(sec) if i[0] not in cp_defaults])
 
                 # if this env variable already exists, prepend to it:
                 v = self.env.get(env_var)
